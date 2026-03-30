@@ -7,7 +7,7 @@ COPY app/package-lock.json package-lock.json
 
 RUN npm ci
 
-# Copy only runtime/build files needed by the application.
+COPY app/Makefile Makefile
 COPY app/.sequelizerc .sequelizerc
 COPY app/config config
 COPY app/server server
