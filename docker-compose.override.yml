@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: make dev
+    volumes:
+      - ./app:/app
+    ports:
+      - "8080:8080"
