@@ -1,0 +1,13 @@
+localhost {
+  log {
+    format json
+  }
+
+  # Compression
+  encode zstd
+  # Self-signed certificate
+  tls internal
+
+  # Proxy all requests to app:8080
+  reverse_proxy /* app:8080
+}
