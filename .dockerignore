@@ -1,2 +1,16 @@
+.git
+.github
+.cursor
+.idea
+.vscode
+
 node_modules
 app/node_modules
+app/.env
+app/*.sqlite
+app/coverage
+app/tmp
+app/temp
+
+README.md
+services

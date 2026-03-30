@@ -8,7 +8,12 @@ COPY app/package-lock.json package-lock.json
 
 RUN npm ci
 
-COPY app/. .
+# Copy only runtime/build files needed by the application.
+COPY app/.sequelizerc .sequelizerc
+COPY app/config config
+COPY app/server server
+COPY app/src src
+COPY app/webpack.config.js webpack.config.js
 
 EXPOSE 8080
 ENV NODE_ENV=production
