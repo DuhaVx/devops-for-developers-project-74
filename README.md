@@ -1,26 +1,26 @@
-### CI Status
+### Статус CI
 [![Actions Status](https://github.com/DuhaVx/devops-for-developers-project-74/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/DuhaVx/devops-for-developers-project-74/actions)
 [![Push Workflow](https://github.com/DuhaVx/devops-for-developers-project-74/actions/workflows/push.yml/badge.svg)](https://github.com/DuhaVx/devops-for-developers-project-74/actions/workflows/push.yml)
 
-## Project
-Blog application packaged with Docker and Docker Compose.
+## О проекте
+Блог на Fastify, упакованный в Docker и Docker Compose.
 
-**Docker Hub image:** `duhavx/devops-for-developers-project-74:latest`
+**Образ на Docker Hub:** `duhavx/devops-for-developers-project-74:latest`
 
 ```bash
 docker pull duhavx/devops-for-developers-project-74:latest
 docker run -p 8080:8080 -e NODE_ENV=development duhavx/devops-for-developers-project-74:latest make dev
 ```
 
-## System requirements
-- Docker 24+ and Docker Compose v2 (`docker compose`, or `docker-compose` ≥ 1.27)
+## Требования к системе
+- Docker 24+ и Docker Compose v2 (`docker compose` либо классический `docker-compose` ≥ 1.27)
 - GNU Make
-- Node.js ≥ 20 (optional, for editing the app outside containers)
+- Node.js ≥ 20 (по желанию, для работы с кодом вне контейнеров)
 
-## Environment variables
-The app reads database settings from the environment (see `app/.env.example`).
+## Переменные окружения
+Настройки БД задаются через окружение (см. `app/.env.example`).
 
-For Docker Compose at the repo root, create a `.env` file (not committed), for example:
+Для запуска через Docker Compose в **корне репозитория** создайте файл `.env` (в git не коммитится), например:
 
 ```env
 DATABASE_HOST=db
@@ -30,40 +30,40 @@ DATABASE_PASSWORD=password
 DATABASE_PORT=5432
 ```
 
-You can copy the template and adjust:
+Шаблон можно скопировать и отредактировать:
 
 ```bash
 cp app/.env.example .env
 ```
 
-Variables include `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_NAME`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, and `NODE_ENV`.
+Используются в том числе `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_NAME`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, а также `NODE_ENV`.
 
-## Makefile (from repository root)
-| Command | Purpose |
-|--------|---------|
-| `make setup` | Install dependencies and run migrations inside the `app` container |
-| `make dev` | Development stack (app, PostgreSQL, Caddy) |
-| `make test` | Tests using `docker-compose.yml` only |
-| `make ci` | Same as CI: `docker compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from app` |
+## Команды Makefile (из корня репозитория)
+| Команда | Назначение |
+|--------|------------|
+| `make setup` | Установка зависимостей и миграции в контейнере `app` |
+| `make dev` | Стек для разработки: приложение, PostgreSQL, Caddy |
+| `make test` | Тесты только по `docker-compose.yml` |
+| `make ci` | Как в CI: `docker compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from app` |
 
-## Run application (development)
+## Запуск приложения (разработка)
 ```bash
 make dev
 ```
 
-Open `https://localhost` (Caddy, self-signed TLS) or `http://localhost` (redirects to HTTPS).
+В браузере: `https://localhost` (Caddy, самоподписной сертификат) или `http://localhost` (редирект на HTTPS).
 
-## Run tests
-Tests run inside Docker:
+## Запуск тестов
+Тесты выполняются внутри Docker:
 
 ```bash
 make test
 ```
 
-CI runs `make ci` in `push.yml`.
+В CI вызывается `make ci` (workflow `push.yml`).
 
-## Docker layout
-- **`Dockerfile`** — Node 20.12.2, `WORKDIR /app`, no copying of sources (used by dev override).
-- **`Dockerfile.production`** — install deps, build, production image.
-- **`docker-compose.yml`** — tests and production build; `app` has no published ports; `db` is PostgreSQL with a healthcheck.
-- **`docker-compose.override.yml`** — dev: bind-mount `app/`, Caddy on 80/443.
+## Структура Docker
+- **`Dockerfile`** — образ Node 20.12.2, `WORKDIR /app`, без копирования исходников (для dev-override).
+- **`Dockerfile.production`** — установка зависимостей, сборка, production-образ.
+- **`docker-compose.yml`** — тесты и production-сборка; у `app` нет проброшенных портов; сервис `db` — PostgreSQL с healthcheck.
+- **`docker-compose.override.yml`** — разработка: монтирование `app/`, Caddy на портах 80 и 443.
